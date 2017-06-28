@@ -22,6 +22,8 @@ app = Flask(__name__)
 
 app.debug = True
 
+app.config.update(dict(PREFERRED_URL_SCHEME = 'https'))
+
 app.secret_key = os.environ['APP_SECRET_KEY']
 oauth = OAuth(app)
 
