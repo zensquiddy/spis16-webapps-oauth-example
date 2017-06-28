@@ -47,7 +47,7 @@ github = oauth.remote_app(
 
 @app.context_processor
 def inject_logged_in():
-    print "Checking isLoggedIn"
+    print ("Checking isLoggedIn")
     return dict(logged_in=('github_token' in session))
 
 @app.route('/')
