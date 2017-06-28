@@ -22,7 +22,7 @@ app = Flask(__name__)
 
 app.debug = True
 
-app.config.update(dict(PREFERRED_URL_SCHEME = 'https'))
+#app.config.update(dict(PREFERRED_URL_SCHEME = 'https'))
 
 app.secret_key = os.environ['APP_SECRET_KEY']
 oauth = OAuth(app)
@@ -64,7 +64,7 @@ def home():
 
 @app.route('/login')
 def login():
-    return github.authorize(callback=url_for('authorized', _external=True))
+    return github.authorize(callback=url_for('authorized', _external=True, _scheme='https'))
 
 @app.route('/logout')
 def logout():
