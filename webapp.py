@@ -5,6 +5,9 @@ from flask import render_template, flash
 import pprint
 import os
 
+class GithubOAuthVarsNotDefined(Exception):
+        pass
+
 if os.getenv('GITHUB_CLIENT_ID') == None or \
         os.getenv('GITHUB_CLIENT_SECRET') == None or \
         os.getenv('APP_SECRET_KEY') == None:
