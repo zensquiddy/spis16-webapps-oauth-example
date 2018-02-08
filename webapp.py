@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, session, request, jsonify
 from flask_oauthlib.client import OAuth
-from flask import render_template, flash
+from flask import render_template
 
 import pprint
 import os
@@ -15,7 +15,7 @@ oauth = OAuth(app)
 # This code originally from https://github.com/lepture/flask-oauthlib/blob/master/example/github.py
 # Edited by P. Conrad for SPIS 2016 to add getting Client Id and Secret from
 # environment variables, so that this will work on Heroku.
-# Edited by S. Adams for Designing Software for the Web
+# Edited by S. Adams for Designing Software for the Web to add comments and remove flash messaging
 
 github = oauth.remote_app(
     'github',
@@ -67,21 +67,16 @@ def authorized():
     resp = github.authorized_response()
     if resp is None:
         session.clear()
-        login_error_message = 'Access denied: reason=%s error=%s full=%s' % (
-            request.args['error'],
-            request.args['error_description'],
-            pprint.pformat(request.args)
-        )        
-        flash(login_error_message, 'error')
+        message = 'Access denied: reason=' + request.args['error'] + ' error=' + request.args['error_description'] + ' full=' + pprint.pformat(request.args)      
     else:
         try:
             session['github_token'] = (resp['access_token'], '')
             session['user_data']=github.get('user').data
-            flash('You were successfully logged in')
+            message='You were successfully logged in'
         except:
             session.clear()
-            flash('Unable to login, please try again',error)
-    return redirect(url_for('home'))
+            message='Unable to login, please try again.  ' + error
+    return render_template('loggedin.html', message=message)
 
 
 @app.route('/page1')
