@@ -5,43 +5,28 @@ from flask import render_template, flash
 import pprint
 import os
 
-class GithubOAuthVarsNotDefined(Exception):
-        pass
-
-if os.getenv('GITHUB_CLIENT_ID') == None or \
-        os.getenv('GITHUB_CLIENT_SECRET') == None or \
-        os.getenv('APP_SECRET_KEY') == None:
-    raise GithubOAuthVarsNotDefined('''
-      Please define environment variables:
-         GITHUB_CLIENT_ID
-         GITHUB_CLIENT_SECRET
-         APP_SECRET_KEY
-      ''')
-
 app = Flask(__name__)
 
 app.debug = True
 
-app.secret_key = os.environ['APP_SECRET_KEY']
+app.secret_key = os.environ['SECRET_KEY'] #used to sign session cookies
 oauth = OAuth(app)
 
 # This code originally from https://github.com/lepture/flask-oauthlib/blob/master/example/github.py
 # Edited by P. Conrad for SPIS 2016 to add getting Client Id and Secret from
 # environment variables, so that this will work on Heroku.
-
-class GithubOAuthVarsNotDefined(Exception):
-    '''raise this if the necessary env variables are not defined '''
+# Edited by S. Adams for Designing Software for the Web
 
 github = oauth.remote_app(
     'github',
-    consumer_key=os.environ['GITHUB_CLIENT_ID'],
-    consumer_secret=os.environ['GITHUB_CLIENT_SECRET'],
+    consumer_key=os.environ['GITHUB_CLIENT_ID'], #your web app's "username" for github's OAuth
+    consumer_secret=os.environ['GITHUB_CLIENT_SECRET'],#your web app's "password" for github's OAuth
     request_token_params={'scope': 'user:email'},
     base_url='https://api.github.com/',
     request_token_url=None,
     access_token_method='POST',
-    access_token_url='https://github.com/login/oauth/access_token',
-    authorize_url='https://github.com/login/oauth/authorize'
+    access_token_url='https://github.com/login/oauth/access_token',  
+    authorize_url='https://github.com/login/oauth/authorize' #URL for github's OAuth login
 )
 
 
@@ -62,7 +47,8 @@ def home():
 
 @app.route('/login')
 def login():
-    return github.authorize(callback=url_for('authorized', _external=True, _scheme='https'))
+    return github.authorize() #use pre-configured callback URL    
+    #return github.authorize(callback=url_for('authorized', _external=True, _scheme='https'))
 
 @app.route('/logout')
 def logout():
