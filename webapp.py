@@ -38,12 +38,6 @@ def inject_logged_in():
 @app.route('/')
 def home():
     return render_template('home.html')
-    '''
-    if 'github_token' in session:
-        me = github.get('user')
-        return jsonify(me.data)
-    return redirect(url_for('login'))
-    '''
 
 @app.route('/login')
 def login():   
@@ -52,15 +46,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('You were logged out')
-    return redirect(url_for('home'))
-
-
-#@app.route('/logout')
-#def logout():
-#    session.pop('github_token', None)
-#    return redirect(url_for('index'))
-
+    return render_template('message.html', message='You were logged out')
 
 @app.route('/login/authorized')
 def authorized():
