@@ -21,7 +21,7 @@ github = oauth.remote_app(
     'github',
     consumer_key=os.environ['GITHUB_CLIENT_ID'], #your web app's "username" for github's OAuth
     consumer_secret=os.environ['GITHUB_CLIENT_SECRET'],#your web app's "password" for github's OAuth
-    request_token_params={'scope': 'user:email'},
+    request_token_params={'scope': 'user:email'}, #request read-only access to the user's email.  For a list of possible scopes, see developer.github.com/apps/building-oauth-apps/scopes-for-oauth-apps
     base_url='https://api.github.com/',
     request_token_url=None,
     access_token_method='POST',
@@ -30,9 +30,12 @@ github = oauth.remote_app(
 )
 
 
+#context processors run before templates are rendered and add variable(s) to the template's context
+#context processors must return a dictionary 
+#this context processor adds the variable logged_in to the conext for all templates
 @app.context_processor
 def inject_logged_in():
-    return dict(logged_in=('github_token' in session))
+    return {"logged_in":('github_token' in session))
 
 @app.route('/')
 def home():
