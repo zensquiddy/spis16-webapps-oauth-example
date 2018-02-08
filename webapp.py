@@ -32,7 +32,6 @@ github = oauth.remote_app(
 
 @app.context_processor
 def inject_logged_in():
-    print ("Checking isLoggedIn")
     return dict(logged_in=('github_token' in session))
 
 @app.route('/')
@@ -58,7 +57,7 @@ def authorized():
         try:
             session['github_token'] = (resp['access_token'], '')
             session['user_data']=github.get('user').data
-            message='You were successfully logged in'
+            message='You were successfully logged in as ' + session['user_data']['login']
         except:
             session.clear()
             message='Unable to login, please try again.  ' + error
