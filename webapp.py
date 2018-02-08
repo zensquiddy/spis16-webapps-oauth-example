@@ -62,7 +62,7 @@ def authorized():
         except:
             session.clear()
             message='Unable to login, please try again.  ' + error
-    return render_template('loggedin.html', message=message)
+    return render_template('message.html', message=message)
 
 
 @app.route('/page1')
