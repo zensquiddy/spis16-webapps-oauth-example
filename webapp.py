@@ -58,7 +58,7 @@ def authorized():
         message = 'Access denied: reason=' + request.args['error'] + ' error=' + request.args['error_description'] + ' full=' + pprint.pformat(request.args)      
     else:
         try:
-            session['github_token'] = (resp['access_token'], '')
+            session['github_token'] = (resp['access_token'], '') #save the token to prove that the user logged in
             session['user_data']=github.get('user').data
             message='You were successfully logged in as ' + session['user_data']['login']
         except:
@@ -79,7 +79,7 @@ def renderPage1():
 def renderPage2():
     return render_template('page2.html')
 
-
+#the tokengetter is automatically called to check who is logged in.
 @github.tokengetter
 def get_github_oauth_token():
     return session.get('github_token')
