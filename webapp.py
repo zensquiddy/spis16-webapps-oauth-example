@@ -5,18 +5,19 @@ from flask import render_template
 import pprint
 import os
 
-app = Flask(__name__)
-
-app.debug = True
-
-app.secret_key = os.environ['SECRET_KEY'] #used to sign session cookies
-oauth = OAuth(app)
-
 # This code originally from https://github.com/lepture/flask-oauthlib/blob/master/example/github.py
 # Edited by P. Conrad for SPIS 2016 to add getting Client Id and Secret from
 # environment variables, so that this will work on Heroku.
 # Edited by S. Adams for Designing Software for the Web to add comments and remove flash messaging
 
+app = Flask(__name__)
+
+app.debug = True #Change this to False for production
+
+app.secret_key = os.environ['SECRET_KEY'] #used to sign session cookies
+oauth = OAuth(app)
+
+#Set up GitHub as OAuth provider
 github = oauth.remote_app(
     'github',
     consumer_key=os.environ['GITHUB_CLIENT_ID'], #your web app's "username" for github's OAuth
@@ -41,6 +42,7 @@ def inject_logged_in():
 def home():
     return render_template('home.html')
 
+#redirect to GitHub's OAuth page and confirm callback URL
 @app.route('/login')
 def login():   
     return github.authorize(callback=url_for('authorized', _external=True, _scheme='https')) #callback URL must match the pre-configured callback URL
@@ -70,7 +72,7 @@ def authorized():
 @app.route('/page1')
 def renderPage1():
     if 'user_data' in session:
-        user_data_pprint = pprint.pformat(session['user_data'])
+        user_data_pprint = pprint.pformat(session['user_data'])#format the user data nicely
     else:
         user_data_pprint = '';
     return render_template('page1.html',dump_user_data=user_data_pprint)
