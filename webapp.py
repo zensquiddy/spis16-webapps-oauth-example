@@ -53,6 +53,7 @@ def logout():
     return render_template('message.html', message='You were logged out')
 
 @app.route('/login/authorized')
+@oauth.require_oauth('email')
 def authorized():
     resp = github.authorized_response()
     if resp is None:
@@ -62,7 +63,7 @@ def authorized():
         try:
             session['github_token'] = (resp['access_token'], '') #save the token to prove that the user logged in
             session['user_data']=github.get('user').data
-            message='You were successfully logged in as ' + session['user_data']['login']
+            message='You were successfully logged in as ' + session['user_data']['login'] + '.  Email: '+ request.oauth.email
         except:
             session.clear()
             message='Unable to login, please try again.  ' + error
