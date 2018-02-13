@@ -66,8 +66,9 @@ def authorized():
             session['user_data']=github.get('user').data
             print(oauth.get('https://api.github.com/user'))
             message='You were successfully logged in as ' + session['user_data']['login'] + '.  Email: '
-        except:
+        except Exception as inst:
             session.clear()
+            print(inst)
             message='Unable to login, please try again.  '
     return render_template('message.html', message=message)
 
