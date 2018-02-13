@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for, session, request, jsonify
 from flask_oauthlib.client import OAuth
+from flask_oauthlib.contrib.apps import github #import to make requests to GitHub's OAuth
 from flask import render_template
 
 import pprint
@@ -16,7 +17,7 @@ app.debug = True #Change this to False for production
 
 app.secret_key = os.environ['SECRET_KEY'] #used to sign session cookies
 oauth = OAuth(app)
-oauth.init_app(app)
+oauth.init_app(app) #initialize the app to be able to make requests for user information
 
 #Set up GitHub as OAuth provider
 github = oauth.remote_app(
