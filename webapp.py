@@ -64,7 +64,7 @@ def authorized():
         try:
             session['github_token'] = (resp['access_token'], '') #save the token to prove that the user logged in
             session['user_data']=github.get('user').data
-            print(oauth.request('https://api.github.com/user'))
+            #print(oauth.request('https://api.github.com/user'))
             message='You were successfully logged in as ' + session['user_data']['login'] + '.  Email: '
         except Exception as inst:
             session.clear()
