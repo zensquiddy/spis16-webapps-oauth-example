@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, session, request, jsonify
 from flask_oauthlib.client import OAuth
-from flask_oauthlib.contrib.apps import github #import to make requests to GitHub's OAuth
+#from flask_oauthlib.contrib.apps import github #import to make requests to GitHub's OAuth
 from flask import render_template
 
 import pprint
@@ -64,7 +64,7 @@ def authorized():
         try:
             session['github_token'] = (resp['access_token'], '') #save the token to prove that the user logged in
             session['user_data']=github.get('user').data
-            print(oauth.get('https://api.github.com/user'))
+            print(oauth.request('https://api.github.com/user'))
             message='You were successfully logged in as ' + session['user_data']['login'] + '.  Email: '
         except Exception as inst:
             session.clear()
