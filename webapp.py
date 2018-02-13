@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, session, request, jsonify
 from flask_oauthlib.client import OAuth
-from flask_oauthlib.contrib.apps import github #import to make requests to GitHub's OAuth
+#from flask_oauthlib.contrib.apps import github #import to make requests to GitHub's OAuth
 from flask import render_template
 
 import pprint
@@ -55,7 +55,6 @@ def logout():
     return render_template('message.html', message='You were logged out')
 
 @app.route('/login/authorized')
-@oauth.require_oauth('email')
 def authorized():
     resp = github.authorized_response()
     if resp is None:
@@ -65,7 +64,8 @@ def authorized():
         try:
             session['github_token'] = (resp['access_token'], '') #save the token to prove that the user logged in
             session['user_data']=github.get('user').data
-            message='You were successfully logged in as ' + session['user_data']['login'] + '.  Email: '+ request.oauth.email
+            print(oauth.get('/me').data)
+            message='You were successfully logged in as ' + session['user_data']['login'] + '.  Email: '
         except:
             session.clear()
             message='Unable to login, please try again.  ' + error
