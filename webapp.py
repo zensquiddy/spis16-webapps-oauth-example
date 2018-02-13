@@ -64,11 +64,11 @@ def authorized():
         try:
             session['github_token'] = (resp['access_token'], '') #save the token to prove that the user logged in
             session['user_data']=github.get('user').data
-            print(oauth.get('/me').data)
+            print(oauth.get('/me'))
             message='You were successfully logged in as ' + session['user_data']['login'] + '.  Email: '
         except:
             session.clear()
-            message='Unable to login, please try again.  ' + error
+            message='Unable to login, please try again.  '
     return render_template('message.html', message=message)
 
 
