@@ -14,6 +14,7 @@ import os
 app = Flask(__name__)
 
 app.debug = True #Change this to False for production
+os.environ['DEBUG'] = '1' #Remove once done debugging
 
 app.secret_key = os.environ['SECRET_KEY'] #used to sign session cookies
 oauth = OAuth(app)
