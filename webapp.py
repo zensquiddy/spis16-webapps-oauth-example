@@ -64,9 +64,9 @@ def authorized():
     else:
         try:
             session['github_token'] = (resp['access_token'], '') #save the token to prove that the user logged in
-            session['user_data']=github.get('user').data
-            pprint.pprint(vars(github.get('/email')))
-            pprint.pprint(vars(github.get('api/2/accounts/profile/')))
+            session['user_data']=github['user'].data
+            #pprint.pprint(vars(github['/email']))
+            #pprint.pprint(vars(github['api/2/accounts/profile/']))
             message='You were successfully logged in as ' + session['user_data']['login'] + '.'
         except Exception as inst:
             session.clear()
@@ -90,7 +90,7 @@ def renderPage2():
 #the tokengetter is automatically called to check who is logged in.
 @github.tokengetter
 def get_github_oauth_token():
-    return session.get('github_token')
+    return session['github_token']
 
 
 if __name__ == '__main__':
