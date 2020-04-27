@@ -1,3 +1,3 @@
 # spis16-webapps-oauth-example
 
-Running on heroku at: <https://salty-reef-52860.herokuapp.com/>
+Running on heroku at: <https://tranquil-shore-94824.herokuapp.com/>
