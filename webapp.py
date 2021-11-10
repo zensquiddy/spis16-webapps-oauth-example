@@ -87,6 +87,10 @@ def renderPage1():
 def renderPage2():
     return render_template('page2.html')
 
+@app.route('/googleb4c3aeedcc2dd103.html')
+def render_google_verification():
+    return render_template('googleb4c3aeedcc2dd103.html')
+
 #the tokengetter is automatically called to check who is logged in.
 @github.tokengetter
 def get_github_oauth_token():
