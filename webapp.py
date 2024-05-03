@@ -39,7 +39,8 @@ github = oauth.remote_app(
 #this context processor adds the variable logged_in to the conext for all templates
 @app.context_processor
 def inject_logged_in():
-    return {"logged_in":('github_token' in session)}
+    is_logged_in = 'github_token' in session #this will be true if the token is in the session and false otherwise
+    return {"logged_in":is_logged_in}
 
 @app.route('/')
 def home():
